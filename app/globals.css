@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    @apply bg-[var(--background)] text-[var(--foreground)] antialiased;
+    font-family: "DM Sans", "Satoshi", sans-serif;
+  }
+
+  * {
+    @apply border-[var(--border)];
+  }
+}
