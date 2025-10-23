@@ -1,39 +1,55 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import WelcomeModal from "../components/WelcomeModal";
+import AppSetupModal from "../components/AppSetupModal";
+import CreatePinModal from "../components/CreatePinModal";
+import SelectWalletTypeModal from "../components/SelectWalletTypeModal";
 
 export default function LandingPage() {
+  // Two modals managed separately
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
+  const [setupOpen, setSetupOpen] = useState(false);
+  const [pinOpen, setPinOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [showSelectType, setShowSelectType] = useState(false);
+
   return (
-    <main className="min-h-screen bg-[#0e0e0e] text-white flex flex-col items-center">
+    <main className="min-h-screen bg-[#0e0e0e] text-white flex flex-col items-center relative">
       {/* Top gradient line */}
-      <div className="w-full h-0.5 bg-linear-to-r from-pink-500 via-orange-400 to-purple-500" />
+      <div className="w-full h-0.5 bg-gradient-to-r from-pink-500 via-orange-400 to-purple-500" />
 
       {/* Hero section */}
-      <section className="flex flex-col items-center text-center mt-24 px-4">
-        {/* Main heading */}
-        <h1 className="mt-10 text-4xl sm:text-5xl font-extrabold">
-          <span className="text-white">A modern wallet.</span>
+      <section className="flex flex-col items-start text-left mt-24 px-12 sm:px-24 flex-grow">
+        <h1 className="mt-10 text-5xl sm:text-6xl font-extrabold leading-tight">
+          <span className="bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
+            A modern Cardano Wallet.{" "}
+          </span>
           <br />
-          <span className="bg-linear-to-r from-pink-500 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
             For everyone.
           </span>
         </h1>
 
-        <p className="mt-6 text-lg text-white/80 max-w-[40ch]">
+        <p className="mt-6 text-xl text-white/80 max-w-[40ch]">
           Friendly for beginners. <br />
           Powerful for pro users.
         </p>
 
-        <button className="mt-8 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-full px-6 py-3 transition">
+        <button
+          onClick={() => setWelcomeOpen(true)}
+          className="mt-8 bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-full px-8 py-4 transition"
+        >
           Open app
         </button>
 
         {/* Download cards */}
         <div className="mt-12 flex flex-col sm:flex-row gap-6">
-          {/* Mobile Dapps Card */}
           <div className="bg-[#161616] rounded-2xl shadow-md p-6 w-72 text-left">
-            <h2 className="text-white font-semibold text-sm">
+            <h2 className="text-white font-semibold text-lg">
               Mobile Dapps{" "}
               <span className="text-gray-400 font-normal">(Dapp browser)</span>
             </h2>
@@ -71,9 +87,8 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Browser Extension Card */}
           <div className="bg-[#161616] rounded-2xl shadow-md p-6 w-72 text-left">
-            <h2 className="text-white font-semibold text-sm">
+            <h2 className="text-white font-semibold text-lg">
               Browser Extension{" "}
               <span className="text-gray-400 font-normal">
                 (Dapp connector & browser)
@@ -101,7 +116,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full max-w-5xl mt-24 mb-10 text-sm text-white/70 px-4">
+      <footer className="w-full max-w-5xl mt-auto mb-10 text-sm text-white/70 px-4">
         <div className="flex flex-col sm:flex-row justify-between gap-6 bg-[#161616] rounded-2xl p-6">
           <div>
             <h3 className="font-semibold mb-2">Resources</h3>
@@ -140,11 +155,68 @@ export default function LandingPage() {
             </ul>
           </div>
         </div>
-
-        <p className="mt-6 text-center text-xs text-gray-500">
-          © Ton Wallet {new Date().getFullYear()}
-        </p>
       </footer>
+
+      {/* 🌈 Welcome Modal */}
+      <WelcomeModal
+        open={welcomeOpen}
+        onClose={() => setWelcomeOpen(false)}
+        onNext={() => {
+          setWelcomeOpen(false);
+          setSetupOpen(true);
+        }}
+        illustration={
+          <Image
+            src="/brand/laptop.svg"
+            alt="Welcome Illustration"
+            width={420}
+            height={300}
+          />
+        }
+      />
+
+      {/* ⚙️ Setup Modal */}
+      <AppSetupModal
+        open={setupOpen}
+        onClose={() => setSetupOpen(false)}
+        onBack={() => {
+          setSetupOpen(false);
+          setWelcomeOpen(true);
+        }}
+        onNext={() => {
+          setSetupOpen(false);
+          setPinOpen(true);
+        }}
+      />
+
+      {/* 🔐 Create PIN Modal */}
+      <CreatePinModal
+        open={pinOpen}
+        onClose={() => setPinOpen(false)}
+        onBack={() => {
+          setPinOpen(false);
+          setSetupOpen(true); // go back one step
+        }}
+        onNext={() => {
+          setPinOpen(false);
+          setTimeout(() => setShowSelectType(true), 150); // open wallet type modal
+        }}
+      />
+
+      {/* 💼 Select Wallet Type Modal */}
+      <SelectWalletTypeModal
+        open={showSelectType}
+        onClose={() => setShowSelectType(false)}
+        onBack={() => {
+          setShowSelectType(false);
+          setPinOpen(true);
+        }}
+        onSelect={(key) => {
+          console.log("Selected wallet type:", key);
+          // you can trigger the next modal here based on key, e.g.:
+          // if (key === "new") setShowCreateWallet(true);
+        }}
+      />
     </main>
   );
 }
