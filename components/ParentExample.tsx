@@ -6,13 +6,8 @@ export default function ParentExample() {
   const [lastChoice, setLastChoice] = useState<string | null>(null);
 
   function handleSelect(key: string) {
-    // keys can be: "new", "hw", "seed", "multisig", "import-backup", ...
     setLastChoice(key);
     setOpen(false);
-
-    // Example: route or open a dedicated UI for each key
-    // if (key === "import-backup") router.push("/import/backup")
-    // else if (key === "hw") openHardwareFlow()
   }
 
   return (
@@ -27,7 +22,7 @@ export default function ParentExample() {
         open={open}
         onClose={() => setOpen(false)}
         onSelect={handleSelect}
-        onBack={() => console.log("went back inside modal")}
+        // onBack={() => console.log("went back inside modal")}
       />
 
       {lastChoice ? (

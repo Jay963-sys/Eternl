@@ -138,17 +138,20 @@ export default function LandingPage() {
             <h3 className="font-semibold mb-2">Social</h3>
             <ul className="space-y-1">
               <li>
-                <Link href="#" className="hover:text-white">
+                <Link href="https://x.com/" className="hover:text-white">
                   X.com
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white">
+                <Link href="https://discord.com/" className="hover:text-white">
                   Discord
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white">
+                <Link
+                  href="https://web.telegram.org/"
+                  className="hover:text-white"
+                >
                   Telegram
                 </Link>
               </li>

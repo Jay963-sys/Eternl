@@ -3,6 +3,14 @@
 import React, { useState } from "react";
 import SecondaryModal from "./SecondaryModal";
 import SeedRestore from "./SeedRestore";
+import NewWallet from "./NewWallet";
+import HardwareConnect from "./HardwareConnect";
+import MultiSigSetup from "./MultiSigSetup";
+import ImportBackup from "./ImportBackup";
+import CLISigningKeys from "./CLISigningKeys";
+import AccountPubKey from "./AccountPubKey";
+import AddressReadOnly from "./AddressReadOnly";
+import QRImport from "./QRImport";
 
 type Item = {
   key: string;
@@ -36,16 +44,16 @@ const items: Item[] = [
   },
   {
     key: "multisig",
-    title: "Multi‑Sig Wallet",
+    title: "Multi-Sig Wallet",
     desc: "Create or join a multi-signature wallet",
-    icon: <span>❌</span>,
+    icon: <span>👥</span>,
     openSecondary: true,
   },
   {
     key: "more",
     title: "More",
     desc: "Show additional wallet import options",
-    icon: <span> ▪▪▪</span>,
+    icon: <span>⋯</span>,
   },
 ];
 
@@ -55,30 +63,35 @@ const moreItems: Item[] = [
     title: "Import Backup",
     desc: "Restore from Eternl JSON backup files",
     icon: <span>📁</span>,
+    openSecondary: true,
   },
   {
     key: "cli-signing-keys",
     title: "CLI Signing Keys",
     desc: "Import CLI generated (skey) signing keys",
     icon: <span>🖥️</span>,
+    openSecondary: true,
   },
   {
     key: "account-pubkey",
     title: "Account Public Key (read-only)",
     desc: "Input exported account public key",
     icon: <span>🔐</span>,
+    openSecondary: true,
   },
   {
     key: "address-readonly",
     title: "Address (read-only)",
     desc: "Create from a bech32 address",
     icon: <span>🏷️</span>,
+    openSecondary: true,
   },
   {
     key: "qr-import",
     title: "QR Code Import",
     desc: "Scan the QR Code from another Eternl app",
     icon: <span>📷</span>,
+    openSecondary: true,
   },
 ];
 
@@ -86,13 +99,10 @@ export default function SelectWalletTypeModal({
   open = true,
   onClose,
   onSelect,
-  onBack,
 }: {
   open?: boolean;
   onClose?: () => void;
-  // onSelect now optionally accepts a payload (e.g. mnemonic words) as second arg
   onSelect?: (key: string, payload?: any) => void;
-  onBack?: () => void;
 }) {
   const [view, setView] = useState<"main" | "more">("main");
   const [activeSecondaryKey, setActiveSecondaryKey] = useState<string | null>(
@@ -101,83 +111,66 @@ export default function SelectWalletTypeModal({
 
   if (!open) return null;
 
-  function handleItemClick(it: Item) {
+  const handleItemClick = (it: Item) => {
     if (it.key === "more") {
       setView("more");
       return;
     }
-
     if (it.openSecondary) {
       setActiveSecondaryKey(it.key);
       return;
     }
-
     onSelect?.(it.key);
-  }
+  };
 
-  function renderItem(it: Item) {
-    return (
-      <button
-        key={it.key}
-        onClick={() => handleItemClick(it)}
-        className="w-full text-left rounded-2xl bg-white/5 hover:bg-white/8 px-5 py-4 ring-1 ring-white/10 transition-colors"
-      >
-        <div className="flex items-center gap-4">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-xl">
-            {it.icon}
-          </div>
-          <div className="flex-1">
-            <div className="font-semibold text-white">{it.title}</div>
-            <div className="text-sm text-white/60">{it.desc}</div>
-          </div>
-          <div className="text-white/40">›</div>
-        </div>
-      </button>
-    );
-  }
-
-  function closeSecondary() {
+  const closeSecondary = () => {
     setActiveSecondaryKey(null);
-    setView("main"); // ensure we return to Select Wallet Type list, not the home page
-  }
+  };
 
-  // confirm from secondary flows; payload is optional (SeedRestore will pass words)
-  function confirmFromSecondary(key: string, payload?: any) {
+  const confirmFromSecondary = (key: string, payload?: any) => {
     setActiveSecondaryKey(null);
-    setView("main");
     onSelect?.(key, payload);
-  }
+  };
 
-  function handleBackToMain() {
-    setView("main");
-  }
+  const renderItem = (it: Item) => (
+    <button
+      key={it.key}
+      onClick={() => handleItemClick(it)}
+      className="w-full text-left rounded-2xl bg-white/5 hover:bg-white/8 px-5 py-4 ring-1 ring-white/10 transition-colors"
+    >
+      <div className="flex items-center gap-4">
+        <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-xl">
+          {it.icon}
+        </div>
+        <div className="flex-1">
+          <div className="font-semibold text-white">{it.title}</div>
+          <div className="text-sm text-white/60">{it.desc}</div>
+        </div>
+        <div className="text-white/40">›</div>
+      </div>
+    </button>
+  );
 
   return (
     <>
       <div className="fixed inset-0 z-[60] flex items-start justify-center pt-10 sm:pt-16">
-        {/* Backdrop */}
         <div
           className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           onClick={onClose}
         />
-
-        {/* Dialog */}
         <div className="relative mx-4 w-full max-w-[860px] rounded-3xl bg-neutral-900/95 ring-1 ring-white/10 shadow-2xl overflow-hidden">
           <div className="absolute left-6 right-6 top-0 h-[4px] bg-gradient-to-r from-pink-400 via-orange-300 to-fuchsia-500 rounded-full" />
-
           <div className="px-6 sm:px-8 pt-8 pb-8">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-center gap-4">
                 {view === "more" && (
                   <button
-                    onClick={handleBackToMain}
-                    aria-label="Back"
+                    onClick={() => setView("main")}
                     className="h-10 w-10 rounded-lg bg-white/5 flex items-center justify-center ring-1 ring-white/10 text-white/90 mr-1"
                   >
                     ‹
                   </button>
                 )}
-
                 <div>
                   <h3 className="text-xl font-semibold text-white">
                     {view === "main"
@@ -191,7 +184,6 @@ export default function SelectWalletTypeModal({
                   </p>
                 </div>
               </div>
-
               <div className="shrink-0 mt-1">
                 <span className="inline-flex items-center gap-3 rounded-full bg-white/5 px-4 h-10 ring-1 ring-white/10 text-white">
                   <span className="h-5 w-5 rounded-full overflow-hidden">
@@ -205,7 +197,6 @@ export default function SelectWalletTypeModal({
                 </span>
               </div>
             </div>
-
             <div className="mt-6 space-y-4">
               {view === "main"
                 ? items.map(renderItem)
@@ -215,7 +206,7 @@ export default function SelectWalletTypeModal({
         </div>
       </div>
 
-      {/* Secondary modal: Reusable overlay shown above the main modal */}
+      {/* ✅ Secondary modal flow */}
       <SecondaryModal
         open={!!activeSecondaryKey}
         onClose={closeSecondary}
@@ -227,92 +218,67 @@ export default function SelectWalletTypeModal({
             : activeSecondaryKey === "seed"
             ? "Enter Seed-Phrase"
             : activeSecondaryKey === "multisig"
-            ? "Multi‑Sig Wallet"
-            : "Details"
-        }
-        subtitle={
-          activeSecondaryKey === "hw"
-            ? "Please connect your Ledger/Trezor and follow the prompts."
-            : activeSecondaryKey === "seed"
-            ? "Enter your saved seed phrase"
-            : undefined
+            ? "Multi-Sig Wallet"
+            : ""
         }
       >
         {activeSecondaryKey === "new" && (
-          <div>
-            <p className="text-white/70">
-              Create a wallet by choosing a name and passphrase. This is a
-              placeholder UI.
-            </p>
-            <div className="mt-4 flex gap-2">
-              <button
-                onClick={() => confirmFromSecondary("new")}
-                className="rounded-md bg-emerald-500 px-4 py-2 text-white"
-              >
-                Create wallet
-              </button>
-              <button
-                onClick={closeSecondary}
-                className="rounded-md bg-white/5 px-4 py-2 text-white"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+          <NewWallet
+            onCancel={closeSecondary}
+            onConfirm={(data) => confirmFromSecondary("new", data)}
+          />
         )}
 
         {activeSecondaryKey === "hw" && (
-          <div>
-            <p className="text-white/70">
-              Select your hardware device and follow the connection steps.
-            </p>
-            <div className="mt-4 grid gap-2">
-              <button
-                onClick={() => confirmFromSecondary("hw")}
-                className="rounded-md bg-amber-500 px-4 py-2 text-white"
-              >
-                Connect Ledger (placeholder)
-              </button>
-              <button
-                onClick={closeSecondary}
-                className="rounded-md bg-white/5 px-4 py-2 text-white"
-              >
-                Back
-              </button>
-            </div>
-          </div>
+          <HardwareConnect
+            onCancel={closeSecondary}
+            onConfirm={(data) => confirmFromSecondary("hw", data)}
+          />
         )}
 
         {activeSecondaryKey === "seed" && (
           <SeedRestore
             onCancel={closeSecondary}
-            onConfirm={(words) => {
-              // propagate mnemonic words as optional payload to parent
-              confirmFromSecondary("seed", { words });
-            }}
+            onConfirm={(data) => confirmFromSecondary("seed", data)}
           />
         )}
 
         {activeSecondaryKey === "multisig" && (
-          <div>
-            <p className="text-white/70">
-              Start or join a multi-sig wallet. Fill out keys/peers as required.
-            </p>
-            <div className="mt-4 flex gap-2">
-              <button
-                onClick={() => confirmFromSecondary("multisig")}
-                className="rounded-md bg-emerald-500 px-4 py-2 text-white"
-              >
-                Continue
-              </button>
-              <button
-                onClick={closeSecondary}
-                className="rounded-md bg-white/5 px-4 py-2 text-white"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+          <MultiSigSetup
+            onCancel={closeSecondary}
+            onConfirm={(data) => confirmFromSecondary("multisig", data)}
+          />
+        )}
+
+        {activeSecondaryKey === "import-backup" && (
+          <ImportBackup
+            onCancel={closeSecondary}
+            onConfirm={(data) => confirmFromSecondary("import-backup", data)}
+          />
+        )}
+        {activeSecondaryKey === "cli-signing-keys" && (
+          <CLISigningKeys
+            onCancel={closeSecondary}
+            onConfirm={(data) => confirmFromSecondary("cli-signing-keys", data)}
+          />
+        )}
+        {activeSecondaryKey === "account-pubkey" && (
+          <AccountPubKey
+            onCancel={closeSecondary}
+            onConfirm={(data) => confirmFromSecondary("account-pubkey", data)}
+          />
+        )}
+        {activeSecondaryKey === "address-readonly" && (
+          <AddressReadOnly
+            onCancel={closeSecondary}
+            onConfirm={(data) => confirmFromSecondary("address-readonly", data)}
+          />
+        )}
+        {activeSecondaryKey === "qr-import" && (
+          <QRImport
+            onCancel={closeSecondary}
+            onConfirm={(data) => confirmFromSecondary("qr-import", data)}
+          />
         )}
       </SecondaryModal>
     </>

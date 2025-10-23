@@ -87,7 +87,13 @@ export default function AppSetupModal({
               >
                 <option value="USD">$ (USD)</option>
                 <option value="EUR">€ (EUR)</option>
-                <option value="GBP">£ (GBP)</option>
+                <option value="AED">A (AED)</option>
+                <option value="ARS">A (ARS)</option>
+                <option value="AUD">A (AUD)</option>
+                <option value="BCH">B (BCH)</option>
+                <option value="BDT">B (BDT)</option>
+                <option value="BHD">B (BHD)</option>
+                <option value="BMD">B (BMD)</option>
               </select>
               <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-white/70">
                 ⌄
