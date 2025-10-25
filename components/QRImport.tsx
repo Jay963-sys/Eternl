@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 
 type QRImportProps = {
   onCancel: () => void;
-  onConfirm: (data: { backup: any }) => void;
+  onConfirm: (data: { backup: unknown }) => void;
 };
 
 export default function QRImport({ onCancel, onConfirm }: QRImportProps) {
@@ -26,7 +26,7 @@ export default function QRImport({ onCancel, onConfirm }: QRImportProps) {
         setScanning(false);
         // onConfirm({ qrData: "mock_wallet_data" });
       }, 4000);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError("Camera access denied or not available.");
     }
   }

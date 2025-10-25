@@ -91,7 +91,6 @@ export default function SeedRestore({
       // focus first input after short timeout so DOM is ready
       setTimeout(() => firstInputRef.current?.focus(), 50);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, selectedCount]);
 
   const columns = useMemo(() => {
@@ -254,7 +253,7 @@ export default function SeedRestore({
         <div className="grid grid-cols-3 gap-x-6 gap-y-3">
           {cols.map((col, cIndex) => (
             <div key={cIndex} className="space-y-3">
-              {col.map((idx, i) => (
+              {col.map((idx) => (
                 <div
                   key={idx}
                   className="flex items-center gap-3 rounded-full bg-white/3 px-3 py-2"

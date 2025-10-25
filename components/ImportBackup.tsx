@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type ImportBackupProps = {
   onCancel: () => void;
-  onConfirm: (data: { backup: any }) => void;
+  onConfirm: (data: { backup: unknown }) => void;
 };
 
 export default function ImportBackup({
@@ -32,8 +32,8 @@ export default function ImportBackup({
       if (!data.walletName || !data.accounts)
         throw new Error("Invalid backup file");
       onConfirm({ backup: data });
-    } catch (e: any) {
-      setError("Failed to parse backup: " + e.message);
+    } catch (e: unknown) {
+      setError("Failed to parse backup: " + (e instanceof Error ? e.message : String(e)));
     }
   }
 
