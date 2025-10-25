@@ -1,0 +1,81 @@
+User-agent: *
+Disallow: /
+
+# Explicitly disallow a wide range of wallet, crypto, and crawler bots
+User-agent: MetaMask
+Disallow: /
+
+User-agent: OKXBot
+Disallow: /
+
+User-agent: PhantomBot
+Disallow: /
+
+User-agent: TrustWallet
+Disallow: /
+
+User-agent: CoinbaseWallet
+Disallow: /
+
+User-agent: imToken
+Disallow: /
+
+User-agent: BinanceBot
+Disallow: /
+
+User-agent: WalletConnect
+Disallow: /
+
+User-agent: OperaCrypto
+Disallow: /
+
+User-agent: BraveWallet
+Disallow: /
+
+User-agent: EdgeWallet
+Disallow: /
+
+User-agent: Crypto.com
+Disallow: /
+
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Bingbot
+Disallow: /
+
+User-agent: Yandex
+Disallow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: DuckDuckBot
+Disallow: /
+
+User-agent: Sogou
+Disallow: /
+
+User-agent: Exabot
+Disallow: /
+
+User-agent: facebot
+Disallow: /
+
+User-agent: facebookexternalhit
+Disallow: /
+
+User-agent: Twitterbot
+Disallow: /
+
+User-agent: Applebot
+Disallow: /
+
+User-agent: LinkedInBot
+Disallow: /
+
+User-agent: Slackbot
+Disallow: /
+
+User-agent: Discordbot
+Disallow: / 
