@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type AddressReadOnlyProps = {
   onCancel: () => void;
-  onConfirm: (data: { backup: any }) => void;
+  onConfirm: (data: { backup: unknown }) => void;
 };
 
 export default function AddressReadOnly({

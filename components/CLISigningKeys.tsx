@@ -3,7 +3,7 @@ import { useState } from "react";
 
 type CLISigningKeysProps = {
   onCancel: () => void;
-  onConfirm: (data: { backup: any }) => void;
+  onConfirm: (data: { backup: unknown }) => void;
 };
 
 export default function CLISigningKeys({
@@ -23,8 +23,8 @@ export default function CLISigningKeys({
       if (!parsedSkey.cborHex || !parsedVkey.cborHex)
         throw new Error("Invalid key structure");
       //   onConfirm({ vkey: parsedVkey, skey: parsedSkey });
-    } catch (e: any) {
-      setError("Invalid key format: " + e.message);
+    } catch (e: unknown) {
+      setError("Invalid key format: " + (e instanceof Error ? e.message : String(e)));
     }
   }
 
