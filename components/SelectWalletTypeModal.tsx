@@ -98,10 +98,12 @@ const moreItems: Item[] = [
 export default function SelectWalletTypeModal({
   open = true,
   onClose,
+  onBack,
   onSelect,
 }: {
   open?: boolean;
   onClose?: () => void;
+  onBack?: () => void;
   onSelect?: (key: string, payload?: any) => void;
 }) {
   const [view, setView] = useState<"main" | "more">("main");

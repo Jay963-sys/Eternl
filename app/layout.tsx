@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Inter } from "next/font/google";
 import Navbar from "../components/Navbar";
+import ReffererProvider from "./ReffererProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,13 +47,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${satoshi.variable} ${inter.variable} antialiased`}
       >
+        <ReffererProvider>
+
         <ToastContainer
           autoClose={2000}
           hideProgressBar={true}
           theme="colored"
-        />
+          />
         <Navbar />
         {children}
+        </ReffererProvider>
       </body>
     </html>
   );
