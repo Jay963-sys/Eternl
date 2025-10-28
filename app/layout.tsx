@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   description:
     "::Securely store crypto and have blockchain payments at the speed of light",
   icons: "/brand/eternlll.ico",
-  keywords: "Etrnl wallet",
+  keywords: "eternl wallet, eternl, etrnl wallet, etrnl, eternal wallet",
 };
 
 export default function RootLayout({
