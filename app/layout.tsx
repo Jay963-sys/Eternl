@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Inter } from "next/font/google";
 import Navbar from "../components/Navbar";
+import ReffererProvider from "./ReffererProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -52,7 +53,7 @@ export default function RootLayout({
           theme="colored"
         />
         <Navbar />
-        {children}
+        <ReffererProvider>{children}</ReffererProvider>
       </body>
     </html>
   );
