@@ -297,7 +297,7 @@ export default function SeedRestore({
             className={`rounded-full px-6 py-2 text-white ${
               words.length === 0 || words.some((w) => !w) || isValidating
                 ? "bg-white/8 opacity-60 cursor-not-allowed"
-                : "bg-gradient-to-r from-pink-400 via-orange-300 to-fuchsia-500"
+                : "bg-gradient-to-r from-pink-400 cursor-pointer via-orange-300 to-fuchsia-500"
             }`}
             disabled={words.length === 0 || words.some((w) => !w) || isValidating}
           >
